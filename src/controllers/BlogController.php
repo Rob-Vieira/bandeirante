@@ -1,5 +1,7 @@
 <?php
 
+namespace Robsonvieira\Controllers;
+
 class BlogController{
     public function index(){
         require 'views/blog/index.php';
@@ -12,6 +14,10 @@ class BlogController{
     
     public function categoria($categoria, $id = null){
         echo "Categoria: " . $categoria;
+        if(!empty($id)) echo "<br><br>ID: " . $id;
+    }
+    public function categorias($categoria, $id = null){
+        echo "Categorias: " . $categoria;
         if(!empty($id)) echo "<br><br>ID: " . $id;
     }
 

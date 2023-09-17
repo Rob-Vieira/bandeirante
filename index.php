@@ -2,28 +2,23 @@
 
 require_once './vendor/autoload.php';
 
-use Robsonvieira\Trilha;
+use Robsonvieira\Controllers\BlogController;
+use Robsonvieira\RouteSystem\Bandeirante;
+use Robsonvieira\RouteSystem\Mapa;
 
-Trilha::name('blog')->group('/blog', function(){
-    Trilha::get('/', 'BlogController@index', 'index');
-    Trilha::get('/pesquisa', 'BlogController@pesquisa', 'pesquisa');
-    Trilha::get('/{categoria}', 'BlogController@categoria', 'categoria');
-});
 
-echo '<pre>';
-print_r(Trilha::get_routes());
-echo '</pre>';
+$bandeirante = new Bandeirante();
+$mapa = new Mapa();
 
-// include 'Bandeirante.php';
+$mapa->controller(BlogController::class)->group('/blog')->name('blog');
 
-// $bandeirante = new Bandeirante($_SERVER['REQUEST_URI'], 'controllers/');
 
-// $bandeirante->get('/', 'HomeController@index', 'home.index');
-// $bandeirante->get('/blog', 'BlogController@index', 'blog.index');
-// $bandeirante->get('/artigo/{name}', 'BlogController@artigo', 'blog.artigo');
+$mapa->route('/', 'index', 'GET');
+$mapa->route('/{categoria}/{slug}/{id?}', 'categorias', 'GET');
+$mapa->route('/{categoria}/id/{id?}', 'categoria', 'GET');
+$mapa->route('/pesquisa', 'pesquisa', 'GET');
 
-// $bandeirante->match_route();
-
-// $bandeirante->execute();
+$bandeirante->match_route();
+$bandeirante->execute();
 
 ?>

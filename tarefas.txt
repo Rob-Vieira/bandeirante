@@ -1,0 +1,11 @@
+Bugs para corrigir:
+
+1 - Paramêtros opcionais não funcionam.
+2 - Rotas com paramêtros estão tendo prioridade sobre rotas comuns, se as duas possuirem a mesma quantidade de níveis e forem adicionadas depois.
+
+Coisas ainda há fazer:
+
+1 - Adicionar os middlewares.
+2 - Desenvolver o sistema das views.
+3 - Revisar o código e comentar.
+4 - Estudar métodos de segurança mais avançados para o sistema.
