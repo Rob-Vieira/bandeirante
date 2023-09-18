@@ -10,19 +10,19 @@ class Trilha{
     private $referenceHandle;
     private $middlewares;
     private $name;
-    private $type;
+    private $method;
 
     /**
      * @param String $uri
      * @param String $referenceHandle
-     * @param String $type
+     * @param String $method
      * @param String|Array $middleware
      * @param String $name
      */
-    public function __construct($uri, $referenceHandle, $type, $middleware = [], $name = ''){
+    public function __construct($uri, $referenceHandle, $method, $middleware = [], $name = ''){
         $this->uri = $uri;
         $this->referenceHandle = $referenceHandle;
-        $this->type = $type;
+        $this->method = $method;
         $this->middlewares = $this->middleware($middleware);
         $this->name = $name;
     }
@@ -77,8 +77,8 @@ class Trilha{
     /**
      * @return string
      */
-    public function getType(){
-        return $this->type;
+    public function getMethod(){
+        return $this->method;
     }
 
     /**

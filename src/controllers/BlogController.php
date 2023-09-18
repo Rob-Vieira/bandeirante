@@ -24,4 +24,13 @@ class BlogController{
     public function pesquisa(){
         echo "Essa é uma página de pesquisa, confia!!";
     }
+    public function pesquisas(){
+        echo "Essa é uma página de pesquisas teste, confia!!";
+    }
+    public function pesquisas_g(){
+        echo "Essa é uma página de pesquisas_g, confia!!";
+    }
+    public function pesquisas_t($teste){
+        echo "Essa é uma página de pesquisas, confia!!  " . $teste;
+    }
 }

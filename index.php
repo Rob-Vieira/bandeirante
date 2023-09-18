@@ -14,9 +14,11 @@ $mapa->controller(BlogController::class)->group('/blog')->name('blog');
 
 
 $mapa->route('/', 'index', 'GET');
-$mapa->route('/{categoria}/{slug}/{id?}', 'categorias', 'GET');
-$mapa->route('/{categoria}/id/{id?}', 'categoria', 'GET');
 $mapa->route('/pesquisa', 'pesquisa', 'GET');
+$mapa->route('/pesquisas/teste', 'pesquisas', 'GET');
+$mapa->route('/pesquisas/gera', 'pesquisas_g', 'GET');
+$mapa->route('/pesquisas/{teste}', 'pesquisas_t', 'GET');
+$mapa->route('/int::{categoria}', 'categoria', 'get');
 
 $bandeirante->match_route();
 $bandeirante->execute();

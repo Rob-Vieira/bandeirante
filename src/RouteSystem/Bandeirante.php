@@ -17,24 +17,46 @@ class Bandeirante{
         
         if(!empty($this->uri_levels)){
             foreach(Mapa::getRoutes() as $r){
-                if($_SERVER['REQUEST_METHOD'] != $r->getType()) continue;
+                if($_SERVER['REQUEST_METHOD'] != $r->getMethod()) continue;
         
                 $uri_r_levels = $this->get_uri_levels($r->getUri());
                 $is_compatible = [];
                 $get_params = [];
             
-                if(count($uri_r_levels) == count($this->uri_levels) || strpos($r->getType(), "?}")){
+                if(count($uri_r_levels) == count($this->uri_levels) || strpos($r->getUri(), "?}")){
                     foreach($uri_r_levels as $key => $u_r_l){
                         $is_compatible[$key] = 0;
             
                         if($key+1 <= count($this->uri_levels)){
                             if((strpos($u_r_l, "{") === false || strpos($u_r_l, "}") === false)){
-                                if($u_r_l == $this->uri_levels[$key]) $is_compatible[$key] = 1;
+                                if($u_r_l == $this->uri_levels[$key]) $is_compatible[$key] = 2;
                             }
                             else{
-                                $is_compatible[$key] = 1;
-                                
-                                $get_params[] = urldecode($this->uri_levels[$key]);
+                                if(strpos($u_r_l, "::") === false){
+                                    $is_compatible[$key] = 1;
+                                    
+                                    $get_params[] = urldecode($this->uri_levels[$key]);
+                                }
+                                else{
+                                    $type = explode('::', $u_r_l)[0];
+                                    
+                                    switch($type){
+                                        case 'int':
+                                            if(is_numeric(urldecode($this->uri_levels[$key]))){
+                                                $is_compatible[$key] = 1;
+                                    
+                                                $get_params[] = urldecode($this->uri_levels[$key]);
+                                            }
+                                            break;
+                                        case 'string':
+                                            if(!is_numeric(filter_var(urldecode($this->uri_levels[$key]), FILTER_SANITIZE_NUMBER_INT))){
+                                                $is_compatible[$key] = 1;
+                                    
+                                                $get_params[] = urldecode($this->uri_levels[$key]);
+                                            }
+                                            break;
+                                    }
+                                }
                             }
                         }else{
                             if(strpos($u_r_l, "{") === false || strpos($u_r_l, "}") === false) continue;
@@ -43,7 +65,9 @@ class Bandeirante{
                     }
 
                     if(!in_array(0, $is_compatible) && !empty($is_compatible)){
-                        if($r->getType() == 'POST') $this->post = $_POST;
+                        if($this->current_route != null && in_array(1, $is_compatible)) continue;
+
+                        if($r->getMethod() == 'POST') $this->post = $_POST;
                         $this->get = $get_params;
                         $this->current_route = $r;
                     }     

@@ -88,20 +88,24 @@ class Mapa{
     /**
      * @param string $uri
      * @param string $handle
-     * @param string $type POST | GET
+     * @param string $method POST | GET
      * @return Trilha
      */
-    public function route($uri, $handle, $type = 'GET'){
-        $type = strtoupper($type);
+    public function route($uri, $handle, $method = 'GET'){
+        $method = strtoupper($method);
 
-        if($type != 'GET' && $type != 'POST') throw new Exception('Tipo de rota inesperado', 4);
+        if($method != 'GET' && $method != 'POST') throw new Exception('Tipo de rota inesperado', 4);
 
         $trilha = new Trilha(
             !empty($this->prefixUri) ? $this->prefixUri . $uri : $uri, 
             !empty($this->commonController) ? $this->commonController . '@' . $handle : $handle, 
-            $type, 
+            $method, 
             !empty($this->commonMiddlewares) ? $this->commonMiddlewares : [],
-            !empty($this->prefixName) ? (!empty($this->commonController) ? $this->prefixName . '.' . $handle : $this->prefixName . '.' . explode('@', $handle, 2)[1])  : ''
+            !empty($this->prefixName) ? 
+                (!empty($this->commonController) ? 
+                $this->prefixName . '.' . $handle : 
+                $this->prefixName . '.' . explode('@', $handle, 2)[1])  
+            : ''
         );
 
         self::addRoute($trilha);
